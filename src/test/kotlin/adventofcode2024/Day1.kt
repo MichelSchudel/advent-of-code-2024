@@ -1,6 +1,5 @@
 package adventofcode2024
 
-import adventofcode2023.loadStringLines
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import kotlin.math.abs
@@ -54,7 +53,7 @@ class Day1 {
         return bothLists
     }
 
-    //model builders
+    // model builders
     private fun buildModel(lines: List<String>): Pair<List<Int>, List<Int>> =
         lines
             .map {

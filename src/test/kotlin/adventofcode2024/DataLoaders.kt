@@ -1,6 +1,5 @@
-package adventofcode2023
+package adventofcode2024
 
-import adventofcode2024.Day1
 import java.io.File
 
 fun loadStringLines(fileName: String): List<String> {
