@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test
 
 class Day13 {
     data class Machine(
-        val buttonA: Pair<Int, Int>,
-        val buttonB: Pair<Int, Int>,
-        val prize: Pair<Int, Int>,
+        val buttonA: Pair<Long, Long>,
+        val buttonB: Pair<Long, Long>,
+        val prize: Pair<Long, Long>,
     )
 
     @Test
@@ -22,22 +22,40 @@ class Day13 {
         println(solve(model))
     }
 
-    private fun solve(model: List<Machine>): Int {
-        val buttonCombinations = model.map { findSolutions(it) }
+    @Test
+    fun solvePart2() {
+        val model = buildModelFromInput("/real-input-day-13.txt")
+        val changedModel =
+            model.map { machine ->
+                machine.copy(
+                    prize =
+                        Pair(
+                            machine.prize.first + 10000000000000,
+                            machine.prize.second + 10000000000000,
+                        ),
+                )
+            }
+        println(solve(changedModel))
+    }
+
+    private fun solve(model: List<Machine>): Long {
+        val buttonCombinations = model.map { findSolution(it) }
         val pairs = buttonCombinations.map { pairList -> pairList.map { pair -> 3 * pair.first + pair.second } }
         return pairs.flatten().sum()
     }
 
-    private fun findSolutions(machine: Machine): List<Pair<Int, Int>> {
-        val list = mutableListOf<Pair<Int, Int>>()
-        for (a in 0..100) {
-            for (b in 0..100) {
-                if (a * machine.buttonA.first + b * machine.buttonB.first == machine.prize.first &&
-                    a * machine.buttonA.second + b * machine.buttonB.second == machine.prize.second
-                ) {
-                    list.add(Pair(a, b))
-                }
-            }
+    fun findSolution(machine: Machine): List<Pair<Long, Long>> {
+        val list = mutableListOf<Pair<Long, Long>>()
+        val commonDenominator = machine.buttonA.first * machine.buttonB.second - machine.buttonA.second * machine.buttonB.first
+        val numberOfTimesButtonAPressed =
+            (machine.prize.first * machine.buttonB.second - machine.prize.second * machine.buttonB.first) / commonDenominator
+        val numberOfTimesButtonBPressed =
+            (machine.buttonA.first * machine.prize.second - machine.buttonA.second * machine.prize.first) / commonDenominator
+        if (machine.buttonA.first * numberOfTimesButtonAPressed + machine.buttonB.first * numberOfTimesButtonBPressed == machine.prize.first &&
+            machine.buttonA.second * numberOfTimesButtonAPressed + machine.buttonB.second * numberOfTimesButtonBPressed ==
+            machine.prize.second
+        ) {
+            list.add(Pair(numberOfTimesButtonAPressed, numberOfTimesButtonBPressed))
         }
         return list
     }
@@ -54,14 +72,14 @@ class Day13 {
             val buttonBLine = it[1]
             val prizeLine = it[2]
             val result = regex.matchEntire(buttonALine)
-            val buttonAX = result!!.groups[1]!!.value.toInt()
-            val buttonAY = result.groups[2]!!.value.toInt()
+            val buttonAX = result!!.groups[1]!!.value.toLong()
+            val buttonAY = result.groups[2]!!.value.toLong()
             val result2 = regex2.matchEntire(buttonBLine)
-            val buttonBX = result2!!.groups[1]!!.value.toInt()
-            val buttonBY = result2.groups[2]!!.value.toInt()
+            val buttonBX = result2!!.groups[1]!!.value.toLong()
+            val buttonBY = result2.groups[2]!!.value.toLong()
             val result3 = regex3.matchEntire(prizeLine)
-            val prizeX = result3!!.groups[1]!!.value.toInt()
-            val prizeY = result3.groups[2]!!.value.toInt()
+            val prizeX = result3!!.groups[1]!!.value.toLong()
+            val prizeY = result3.groups[2]!!.value.toLong()
             Machine(
                 buttonA = Pair(buttonAX, buttonAY),
                 buttonB = Pair(buttonBX, buttonBY),
