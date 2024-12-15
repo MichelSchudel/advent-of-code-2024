@@ -10,3 +10,26 @@ fun loadStringLines(fileName: String): List<String> {
     }
     return list
 }
+
+// Extension function to split a list
+fun <T> List<T>.split(delimiter: (T) -> Boolean): List<List<T>> {
+    val result = mutableListOf<MutableList<T>>()
+    var currentList = mutableListOf<T>()
+
+    for (item in this) {
+        if (delimiter(item)) {
+            if (currentList.isNotEmpty()) {
+                result.add(currentList)
+                currentList = mutableListOf()
+            }
+        } else {
+            currentList.add(item)
+        }
+    }
+
+    if (currentList.isNotEmpty()) {
+        result.add(currentList)
+    }
+
+    return result
+}

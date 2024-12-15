@@ -46,7 +46,8 @@ class Day13 {
 
     fun findSolution(machine: Machine): List<Pair<Long, Long>> {
         val list = mutableListOf<Pair<Long, Long>>()
-        val commonDenominator = machine.buttonA.first * machine.buttonB.second - machine.buttonA.second * machine.buttonB.first
+        val commonDenominator =
+            machine.buttonA.first * machine.buttonB.second - machine.buttonA.second * machine.buttonB.first
         val numberOfTimesButtonAPressed =
             (machine.prize.first * machine.buttonB.second - machine.prize.second * machine.buttonB.first) / commonDenominator
         val numberOfTimesButtonBPressed =
@@ -86,28 +87,5 @@ class Day13 {
                 prize = Pair(prizeX, prizeY),
             )
         }
-    }
-
-    // Extension function to split a list
-    fun <T> List<T>.split(delimiter: (T) -> Boolean): List<List<T>> {
-        val result = mutableListOf<MutableList<T>>()
-        var currentList = mutableListOf<T>()
-
-        for (item in this) {
-            if (delimiter(item)) {
-                if (currentList.isNotEmpty()) {
-                    result.add(currentList)
-                    currentList = mutableListOf()
-                }
-            } else {
-                currentList.add(item)
-            }
-        }
-
-        if (currentList.isNotEmpty()) {
-            result.add(currentList)
-        }
-
-        return result
     }
 }
