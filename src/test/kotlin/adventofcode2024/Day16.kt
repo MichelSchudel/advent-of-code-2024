@@ -1,4 +1,5 @@
-import adventofcode2024.loadStringLines
+package adventofcode2024
+
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -51,7 +52,7 @@ class Day16 {
             endPos = theEndPos
         }
 
-        fun addPair(
+        private fun addPair(
             a: Pair<Int, Int>,
             b: Pair<Int, Int>,
         ): Pair<Int, Int> = Pair(a.first + b.first, a.second + b.second)

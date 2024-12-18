@@ -1,9 +1,9 @@
+package adventofcode2024
+
 import org.junit.jupiter.api.Test
 
 class Day17 {
-
-    val inputProgram = listOf(2L,4L,1L,5L,7L,5L,1L,6L,0L,3L,4L,3L,5L,5L,3L,0L)
-
+    private val inputProgram = listOf(2L, 4L, 1L, 5L, 7L, 5L, 1L, 6L, 0L, 3L, 4L, 3L, 5L, 5L, 3L, 0L)
 
     @Test
     fun testPart1() {
@@ -19,11 +19,16 @@ class Day17 {
             val simResult = computer.runHardcodedProgram(i)[0]
             lookup.computeIfAbsent(simResult.toLong()) { mutableSetOf() }.add(i)
         }
-        val result=  backwardSolver(lookup, inputProgram.size, 0)
+        val result = backwardSolver(lookup, inputProgram.size, 0)
         println(result)
     }
-    fun backwardSolver(lookup: Map<Long, Set<Long>>, position: Int, remainder: Long): Long {
-        var pos = position - 1
+
+    private fun backwardSolver(
+        lookup: Map<Long, Set<Long>>,
+        position: Int,
+        remainder: Long,
+    ): Long {
+        val pos = position - 1
         var rem = remainder
         if (pos < 0) return rem
 
@@ -43,9 +48,7 @@ class Day17 {
         private var cRegister = 0L
         private val output = mutableListOf<Int>()
 
-        fun runHardcodedProgram(
-            a: Long
-        ): List<Int> {
+        fun runHardcodedProgram(a: Long): List<Int> {
             this.aRegister = a
             do {
                 bRegister = aRegister and 7
@@ -58,6 +61,5 @@ class Day17 {
             } while (aRegister != 0L)
             return output
         }
-
     }
 }
